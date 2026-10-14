@@ -1,0 +1,1066 @@
+/* =========================================
+   ARIK MUKHERJEE — DARK SOLAR SYSTEM WEBSITE
+   ========================================= */
+
+:root {
+    color-scheme: dark;
+
+    --bg: #080808;
+    --fg: #f5f5f3;
+    --muted: #a8a8a8;
+    --line: rgba(255, 255, 255, 0.22);
+    --panel: rgba(255, 255, 255, 0.035);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 35px;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "DM Sans", sans-serif;
+    overflow-x: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    color: inherit;
+    font: inherit;
+}
+
+/* BACKGROUND */
+
+#ambient-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+.vignette,
+.grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.vignette {
+    background: radial-gradient(
+        ellipse at 70% 42%,
+        transparent 5%,
+        rgba(0, 0, 0, 0.18) 48%,
+        var(--bg) 100%
+    );
+}
+
+.grain {
+    opacity: 0.055;
+    background-image: url(
+        "data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"
+    );
+}
+
+/* HEADER */
+
+.topbar {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 92px;
+    padding: 0 5.5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wordmark {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+}
+
+.wordmark span {
+    color: #888;
+}
+
+/* HAMBURGER */
+
+.menu-toggle {
+    position: relative;
+    z-index: 101;
+
+    width: 42px;
+    height: 34px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 7px;
+
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 38px;
+    height: 1.5px;
+    background: var(--fg);
+
+    transition:
+        transform 0.3s ease,
+        width 0.3s ease;
+}
+
+.menu-toggle span:last-child {
+    width: 27px;
+}
+
+.menu-toggle:hover span:last-child {
+    width: 38px;
+}
+
+.menu-toggle.active span:first-child {
+    transform: translateY(4.25px) rotate(45deg);
+}
+
+.menu-toggle.active span:last-child {
+    width: 38px;
+    transform: translateY(-4.25px) rotate(-45deg);
+}
+
+/* NAVIGATION MENU */
+
+.menu-panel {
+    position: fixed;
+    z-index: 99;
+    top: 76px;
+    right: 4.5%;
+
+    width: min(340px, 90vw);
+    padding: 24px 28px;
+
+    background: rgba(10, 10, 10, 0.97);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    pointer-events: none;
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        visibility 0.3s;
+}
+
+.menu-panel.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.eyebrow {
+    margin: 0;
+    color: var(--muted);
+
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+}
+
+.menu-panel .eyebrow {
+    margin-bottom: 16px;
+}
+
+.menu-panel a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+
+    font-size: 14px;
+    transition: padding 0.25s, color 0.25s;
+}
+
+.menu-panel a:hover {
+    padding-left: 7px;
+    color: #c9b99b;
+}
+
+.menu-panel a span {
+    color: var(--muted);
+}
+
+/* SOCIAL SIDEBAR */
+
+.social-rail {
+    position: absolute;
+    z-index: 4;
+    top: 39%;
+    left: 2.15%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+.social-rail a {
+    width: 20px;
+    height: 20px;
+
+    transition: opacity 0.25s, transform 0.25s;
+}
+
+.social-rail a:hover {
+    opacity: 0.65;
+    transform: translateY(-3px);
+}
+
+.social-rail svg {
+    width: 19px;
+    height: 19px;
+    fill: var(--fg);
+}
+
+.rail-line {
+    width: 1px;
+    height: 52px;
+    background: var(--fg);
+    opacity: 0.7;
+}
+
+.rail-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+
+    font-size: 10px;
+    letter-spacing: 0.28em;
+}
+
+/* HERO */
+
+.hero {
+    position: relative;
+    z-index: 2;
+    isolation: isolate;
+
+    min-height: 100vh;
+    min-height: 100svh;
+
+    display: flex;
+    align-items: center;
+
+    padding: 120px 10% 110px;
+    overflow: hidden;
+}
+
+.hero-copy {
+    position: relative;
+    z-index: 3;
+
+    width: min(730px, 60vw);
+    margin-top: 10px;
+}
+
+.intro {
+    margin: 0 0 23px;
+
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+}
+
+h1 {
+    margin: 0 0 22px;
+
+    font-family: "Playfair Display", serif;
+    font-size: clamp(48px, 5.25vw, 82px);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+}
+
+.period {
+    color: #888;
+}
+
+.role-line {
+    min-height: 48px;
+    margin-bottom: 25px;
+
+    font-size: clamp(19px, 2.4vw, 34px);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+}
+
+.cursor {
+    display: inline-block;
+    margin-left: 4px;
+    font-weight: 300;
+    animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+
+/* DESCRIPTION */
+
+.description {
+    max-width: 560px;
+    margin: 0;
+
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.85;
+}
+
+.dot {
+    margin: 0 7px;
+    color: var(--fg);
+}
+
+/* HERO BUTTONS */
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 35px;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
+
+    min-height: 53px;
+    padding: 0 20px;
+
+    border: 1px solid var(--fg);
+
+    font-size: 13px;
+    font-weight: 500;
+
+    transition:
+        color 0.25s,
+        background 0.25s,
+        transform 0.25s;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+}
+
+.button-solid {
+    background: var(--fg);
+    color: var(--bg);
+}
+
+.button-solid:hover {
+    background: transparent;
+    color: var(--fg);
+}
+
+.button-outline {
+    background: transparent;
+}
+
+.button-outline:hover {
+    background: var(--fg);
+    color: var(--bg);
+}
+
+.github-mark {
+    font-size: 20px;
+}
+
+.mail-mark {
+    font-size: 17px;
+}
+
+.arrow {
+    margin-left: 10px;
+    font-size: 17px;
+}
+
+/* SOLAR SYSTEM AREA */
+
+.visual-anchor {
+    position: absolute;
+    z-index: 1;
+    inset: 0 0 0 42%;
+
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.solar-system {
+    position: absolute;
+
+    width: min(68vw, 850px);
+    aspect-ratio: 1;
+
+    top: 50%;
+    left: 55%;
+
+    transform: translate(-50%, -50%);
+
+    display: grid;
+    place-items: center;
+}
+
+/* SUN */
+
+.sun {
+    position: absolute;
+    z-index: 2;
+
+    width: 10%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+
+    background: radial-gradient(
+        circle at 35% 30%,
+        #fffef4 0,
+        #f9dca7 35%,
+        #d6a85e 65%,
+        #8d6337 100%
+    );
+
+    box-shadow:
+        0 0 22px 8px rgba(255, 220, 160, 0.3),
+        0 0 70px 25px rgba(255, 200, 120, 0.14),
+        0 0 150px 55px rgba(255, 190, 100, 0.07);
+
+    animation: sunPulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes sunPulse {
+    from {
+        filter: brightness(0.9);
+    }
+
+    to {
+        filter: brightness(1.2);
+    }
+}
+
+/* ORBIT PATHS */
+
+.orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    border: 1px solid rgba(225, 215, 195, 0.22);
+    border-radius: 50%;
+
+    transform: translate(-50%, -50%);
+    animation: orbitRotate linear infinite;
+}
+
+.orbit-1 {
+    width: 17%;
+    height: 17%;
+    animation-duration: 8s;
+}
+
+.orbit-2 {
+    width: 25%;
+    height: 25%;
+    animation-duration: 13s;
+}
+
+.orbit-3 {
+    width: 34%;
+    height: 34%;
+    animation-duration: 19s;
+}
+
+.orbit-4 {
+    width: 44%;
+    height: 44%;
+    animation-duration: 27s;
+}
+
+.orbit-5 {
+    width: 56%;
+    height: 56%;
+    animation-duration: 36s;
+}
+
+.orbit-6 {
+    width: 69%;
+    height: 69%;
+    animation-duration: 48s;
+}
+
+.orbit-7 {
+    width: 81%;
+    height: 81%;
+    animation-duration: 60s;
+}
+
+.orbit-8 {
+    width: 94%;
+    height: 94%;
+    animation-duration: 75s;
+}
+
+@keyframes orbitRotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* PLANETS */
+
+.planet {
+    position: absolute;
+    top: 50%;
+    right: -5px;
+
+    transform: translateY(-50%);
+    border-radius: 50%;
+
+    background: radial-gradient(
+        circle at 30% 28%,
+        #c9c6bd 0,
+        #696760 40%,
+        #292929 72%,
+        #080808 100%
+    );
+
+    box-shadow: inset -5px -3px 9px rgba(0, 0, 0, 0.8);
+}
+
+.planet-1 {
+    width: 5px;
+    height: 5px;
+}
+
+.planet-2 {
+    width: 9px;
+    height: 9px;
+}
+
+.planet-3 {
+    width: 12px;
+    height: 12px;
+}
+
+.planet-4 {
+    width: 17px;
+    height: 17px;
+}
+
+.planet-5 {
+    width: 28px;
+    height: 28px;
+}
+
+.planet-6 {
+    width: 42px;
+    height: 42px;
+}
+
+.planet-7 {
+    width: 31px;
+    height: 31px;
+}
+
+.planet-8 {
+    width: 24px;
+    height: 24px;
+}
+
+/* PLANETARY RINGS */
+
+.planet-7::after,
+.planet-8::after {
+    content: "";
+
+    position: absolute;
+    top: 25%;
+    left: -38%;
+
+    width: 175%;
+    height: 48%;
+
+    border: 2px solid rgba(210, 200, 180, 0.55);
+    border-radius: 50%;
+
+    transform: rotate(-20deg);
+}
+
+/* HERO INDICATORS */
+
+.hero-index {
+    position: absolute;
+    z-index: 3;
+    right: 5.5%;
+    bottom: 44px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+}
+
+.hero-index i {
+    display: block;
+    width: 45px;
+    height: 1px;
+    background: var(--muted);
+}
+
+.scroll-cue {
+    position: absolute;
+    z-index: 3;
+    left: 10%;
+    bottom: 43px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 0.23em;
+}
+
+.scroll-cue span {
+    width: 27px;
+    height: 1px;
+    background: var(--muted);
+}
+
+/* CONTACT SECTION */
+
+.contact-section {
+    position: relative;
+    z-index: 2;
+
+    padding: 120px 10% 30px;
+
+    background: linear-gradient(
+        180deg,
+        transparent,
+        var(--bg) 12%
+    );
+}
+
+.section-heading {
+    max-width: 700px;
+    margin-bottom: 52px;
+}
+
+.section-heading .eyebrow {
+    margin-bottom: 22px;
+}
+
+h2 {
+    margin: 0 0 20px;
+
+    font-family: "Playfair Display", serif;
+    font-size: clamp(38px, 5vw, 68px);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.035em;
+}
+
+h2 em {
+    color: var(--muted);
+    font-weight: 400;
+}
+
+.section-heading > p:last-child {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* CONTACT CARDS */
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.contact-card {
+    position: relative;
+
+    min-height: 265px;
+    padding: 25px 25px 23px;
+
+    display: flex;
+    flex-direction: column;
+
+    border-right: 1px solid var(--line);
+
+    transition: background 0.3s;
+}
+
+.contact-card:first-child {
+    border-left: 1px solid var(--line);
+}
+
+.contact-card:hover {
+    background: var(--panel);
+}
+
+.card-number {
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+}
+
+.card-icon {
+    position: absolute;
+    top: 21px;
+    right: 23px;
+    font-size: 23px;
+}
+
+.linkedin-icon {
+    font-weight: 700;
+}
+
+.card-title {
+    margin-top: 54px;
+
+    font-family: "Playfair Display", serif;
+    font-size: 32px;
+}
+
+.card-detail {
+    margin-top: 8px;
+
+    color: var(--muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: auto;
+    padding-top: 25px;
+
+    font-size: 11px;
+}
+
+.card-bottom b {
+    font-size: 18px;
+    font-weight: 400;
+    transition: transform 0.25s;
+}
+
+.contact-card:hover .card-bottom b {
+    transform: translate(4px, -4px);
+}
+
+/* FOOTER */
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+
+    padding: 28px 0 10px;
+
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+}
+
+.footer-mark {
+    color: var(--fg);
+    font-size: 15px;
+}
+
+/* ENTRANCE ANIMATIONS */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(18px);
+
+    animation: reveal 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.12s;
+}
+
+.delay-2 {
+    animation-delay: 0.24s;
+}
+
+.delay-3 {
+    animation-delay: 0.36s;
+}
+
+.delay-4 {
+    animation-delay: 0.48s;
+}
+
+@keyframes reveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+    .hero {
+        padding-left: 9%;
+        padding-right: 7%;
+    }
+
+    .hero-copy {
+        width: 72vw;
+    }
+
+    .visual-anchor {
+        left: 35%;
+        opacity: 0.68;
+    }
+
+    .solar-system {
+        width: 76vw;
+        left: 58%;
+    }
+
+    .description {
+        max-width: 490px;
+    }
+
+    .contact-section {
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+
+    .contact-card {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 640px) {
+    .topbar {
+        height: 76px;
+        padding: 0 6%;
+    }
+
+    .wordmark {
+        font-size: 17px;
+    }
+
+    .hero {
+        min-height: 92svh;
+        align-items: flex-end;
+
+        padding: 160px 7% 110px;
+    }
+
+    .hero-copy {
+        width: 100%;
+        margin: 0;
+    }
+
+    h1 {
+        font-size: clamp(48px, 14vw, 72px);
+    }
+
+    .role-line {
+        min-height: 32px;
+        font-size: 21px;
+    }
+
+    .description {
+        max-width: 100%;
+        font-size: 13px;
+    }
+
+    .visual-anchor {
+        inset: 0;
+        opacity: 0.48;
+    }
+
+    .solar-system {
+        width: 110vw;
+        top: 32%;
+        left: 65%;
+    }
+
+    .sun {
+        width: 9%;
+    }
+
+    .planet-6 {
+        width: 27px;
+        height: 27px;
+    }
+
+    .planet-7 {
+        width: 22px;
+        height: 22px;
+    }
+
+    .social-rail {
+        left: auto;
+        right: 7%;
+        top: 28%;
+        gap: 13px;
+    }
+
+    .rail-line,
+    .rail-label {
+        display: none;
+    }
+
+    .social-rail a {
+        width: 18px;
+        height: 18px;
+    }
+
+    .hero-actions {
+        gap: 10px;
+        margin-top: 26px;
+    }
+
+    .button {
+        min-height: 48px;
+        padding: 0 13px;
+        gap: 8px;
+        font-size: 11px;
+    }
+
+    .arrow {
+        margin-left: 2px;
+    }
+
+    .scroll-cue {
+        left: 7%;
+        bottom: 34px;
+        font-size: 8px;
+    }
+
+    .hero-index {
+        right: 7%;
+        bottom: 34px;
+    }
+
+    .contact-section {
+        padding: 85px 7% 25px;
+    }
+
+    .section-heading {
+        margin-bottom: 35px;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-card,
+    .contact-card:first-child {
+        min-height: 215px;
+
+        border-left: 1px solid var(--line);
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+    }
+
+    .contact-card:last-child {
+        border-bottom: 0;
+    }
+
+    .card-title {
+        margin-top: 36px;
+        font-size: 28px;
+    }
+
+    .card-bottom {
+        padding-top: 18px;
+    }
+
+    footer {
+        flex-wrap: wrap;
+        font-size: 9px;
+    }
+
+    footer span:nth-child(2) {
+        order: 3;
+        width: 100%;
+    }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    #ambient-canvas {
+        opacity: 0.25;
+    }
+}
